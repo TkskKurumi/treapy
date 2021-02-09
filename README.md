@@ -8,7 +8,7 @@ a=treap({'key_B':'value_B','key_A':'value_A'})
 a['key_C']='value_C'
 for i in a:
     print(i)
-print(list(a.item()))
+print(list(a.items()))
 ```
 
 元素会保持按照键有序。
@@ -39,7 +39,7 @@ a=treap()
 a[pair(2,3)]='value2,3'
 a[pair(1,3)]='value1,3'
 a[pair(1,2)]='value1,2'
-for i,j in a.item():
+for i,j in a.items():
     print(i,':',j)
 ```
 
