@@ -1,5 +1,71 @@
+import random
+class treap_iterator:
+    def __init__(self,tree):
+        self.tree=tree
+        self.stk_u=[tree.root]
+        self.stk_i=[0]
+        self.visited=[0 for i in range(tree.size)]
+    
+    def __next__(self):
+        if(not self.tree.size):
+            raise StopIteration()
+        while(self.stk_u):
+            u=self.stk_u[-1]
+            i=self.stk_i[-1]
+            if(i==0):
+                self.stk_i[-1]=i=1
+                if(self.tree.lson[u]!=None):
+                    self.stk_u.append(self.tree.lson[u])
+                    self.stk_i.append(0)
+                    continue
+                
+            if(i==1):
+                self.stk_i[-1]=i=2
+                return self.tree.key[u]
+            if(i==2):
+                self.stk_i[-1]=i=3
+                if(self.tree.rson[u]!=None):
+                    self.stk_u.append(self.tree.rson[u])
+                    self.stk_i.append(0)
+                    continue
+            self.stk_u.pop()
+            self.stk_i.pop()
+        raise StopIteration()
+class treap_item:
+    def __init__(self,tree):
+        self.tree=tree
+        self.stk_u=[tree.root]
+        self.stk_i=[0]
+        self.visited=[0 for i in range(tree.size)]
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if(not self.tree.size):
+            raise StopIteration()
+        while(self.stk_u):
+            u=self.stk_u[-1]
+            i=self.stk_i[-1]
+            if(i==0):
+                self.stk_i[-1]=i=1
+                if(self.tree.lson[u]!=None):
+                    self.stk_u.append(self.tree.lson[u])
+                    self.stk_i.append(0)
+                    continue
+                
+            if(i==1):
+                self.stk_i[-1]=i=2
+                return (self.tree.key[u],self.tree.data[u])
+            if(i==2):
+                self.stk_i[-1]=i=3
+                if(self.tree.rson[u]!=None):
+                    self.stk_u.append(self.tree.rson[u])
+                    self.stk_i.append(0)
+                    continue
+            self.stk_u.pop()
+            self.stk_i.pop()
+        raise StopIteration()
 class treap:
-    def __init__(self):
+    def __init__(self,dic={}):
         self.root=None
         #self.empty_idx=[]
         self.data=[]
@@ -9,6 +75,12 @@ class treap:
         self.rson=[]
         self.fa=[]
         self.hkey=[]
+        self.update(dic)
+    def update(self,d):
+        for k,v in d.items():
+            self[k]=v
+    def item(self):
+        return treap_item(self)
     def _lower_bound(self,key):
         ret=u=self.root
         while(u is not None):
@@ -101,10 +173,6 @@ class treap:
                 break
             else:
                 self.rotup(u)
-                '''print('===')
-                print(self.lson)
-                print(self.rson)        
-                print(self.fa)      '''
     def swap_idx(self,u,v):
         if(self.fa[u]==v):
             return self.swap_idx(v,u)
@@ -119,7 +187,6 @@ class treap:
             self.root=u
         self.swap_data(u,v)
         if(lu==v):
-            #print('ln154')
             if(lv is not None):
                 self.fa[lv]=u
             if(rv is not None):
@@ -138,7 +205,6 @@ class treap:
                 else:
                     self.rson[fu]=v
         elif(ru==v):
-            #print('ln173')
             if(lv is not None):
                 self.fa[lv]=u
             self.lson[u]=lv
@@ -256,13 +322,13 @@ class treap:
         if(hkey is None):
             hkey=random.random()
         if(u is None):
-            self.data.append(data)  #self.data=[data]
-            self.key.append(key)    #self.key=[key]
-            self.sizes.append(1)    #self.sizes=[1]
-            self.lson.append(None)  #self.lson=[None]
-            self.rson.append(None)  #self.rson=[None]
-            self.fa.append(None)    #self.fa=[None]
-            self.hkey.append(hkey)  #self.hkey=[hkey]
+            self.data.append(data)
+            self.key.append(key)
+            self.sizes.append(1)
+            self.lson.append(None)
+            self.rson.append(None)
+            self.fa.append(None)
+            self.hkey.append(hkey)
             self.root=0
             return 0
         lb=self._lower_bound(key)
@@ -301,7 +367,7 @@ class treap:
             if(idx<=_):
                 u=self.lson[u]
             elif(idx==_+1):
-                return u
+                return (self.key[u],self.data[u])
             else:
                 idx-=_+1
                 u=self.rson[u]

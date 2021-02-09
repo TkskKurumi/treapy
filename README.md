@@ -24,23 +24,23 @@ key_C
 
 ```python
 class pair:
-	def __init__(self,first,second):
-		self.first=first
-		self.second=second
-	def __lt__(self,other):
-		if(self.first==other.first):
-			return self.second<other.second
-		return self.first<other.first
-	def __eq__(self,other):
-		return self.first==other.first and self.second==other.second
-	def __repr__(self):
-		return "pair(%s,%s)"%(self.first,self.second)
+    def __init__(self,first,second):
+        self.first=first
+        self.second=second
+    def __lt__(self,other):
+        if(self.first==other.first):
+            return self.second<other.second
+        return self.first<other.first
+    def __eq__(self,other):
+        return self.first==other.first and self.second==other.second
+    def __repr__(self):
+        return "pair(%s,%s)"%(self.first,self.second)
 a=treap()
 a[pair(2,3)]='value2,3'
 a[pair(1,3)]='value1,3'
 a[pair(1,2)]='value1,2'
 for i,j in a.item():
-	print(i,':',j)
+    print(i,':',j)
 ```
 
 ```python
@@ -54,7 +54,7 @@ pair(2,3) : value2,3
 ```python
 a=treap()
 for i in '0123456789':
-	a[i]='value_'+i
+    a[i]='value_'+i
 print(list(a))
 print(a.rank(4))
 ```
