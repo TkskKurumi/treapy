@@ -79,7 +79,7 @@ class treap:
     def update(self,d):
         for k,v in d.items():
             self[k]=v
-    def item(self):
+    def items(self):
         return treap_item(self)
     def _lower_bound(self,key):
         ret=u=self.root
